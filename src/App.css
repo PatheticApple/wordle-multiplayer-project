@@ -20,7 +20,7 @@ nav {
   display: grid;
   place-items: center;
 }
-
+/* test */
 nav h1 {
   margin: 0;
   font-family: Helvetica, Arial, sans-serif;
@@ -144,4 +144,43 @@ nav h1 {
 }
 #disabled {
   background-color: #3a393c;
+}
+
+
+
+/* SIGN UP AND LOG IN */
+.login,
+.signUp {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.login input,
+.signUp input {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 300px;
+  height: 30px;
+}
+
+.login button,
+.signUp button {
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 320px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.login label,
+.signUp label {
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  color: white;
 }

@@ -6,6 +6,14 @@ import { createContext, useState, useEffect } from 'react';
 import { boardDefault } from './components/Words';
 import { generateWordSet } from './components/Words';
 import 'bootstrap/dist/css/bootstrap.css';
+
+
+import { StreamChat } from "stream-chat";
+import Cookies from "universal-cookie";
+import Login from './components/Login';
+import SignUp from './components/SignUp';
+
+
 export const AppContext = createContext();
 
 
@@ -17,6 +25,42 @@ function App() {
   const [disabledLetters, setDisabledLetters] = useState([])
   const [gameOver, setGameOver] = useState({ gameOver: false, guessedWord: false });
   const [numberofPlayer, setNumberofPlayer] = useState(2);
+
+
+  const [isAuth, setIsAuth] = useState(false);
+  const cookies = new Cookies();
+  const api_key = "2egf5xeqcuhe"
+  const client = StreamChat.getInstance(api_key)
+  const token = cookies.get("token");
+
+
+  const logOut = () => {
+    cookies.remove("token");
+    cookies.remove("userId");
+    cookies.remove("firstName");
+    cookies.remove("lastName");
+    cookies.remove("username");
+    cookies.remove("hashedPassword");
+    client.disconnectUser();
+    setIsAuth(false);
+  }
+
+  if (token) {
+    client.connectUser({
+      id: cookies.get("userId"),
+      name: cookies.get("username"),
+      firstName: cookies.get("firstName"),
+      lastName: cookies.get("lastName"),
+      hashedPassword: cookies.get("hashedPassword")
+    },
+      token
+    ).then((user) => {
+      console.log(user);
+      setIsAuth(true);
+    })
+
+  }
+
   useEffect(() => {
     generateWordSet().then((words) => {
       setWordSet(words.wordSet);
@@ -67,7 +111,10 @@ function App() {
     }
   }
   return (
+    
     <div className="App">
+    {isAuth ? (
+      <div>
       <nav>
         <h1>
           Wordle
@@ -111,10 +158,18 @@ function App() {
             </div>
 
           </div>
+          <button onClick={logOut}>Log out</button>
         </div>
 
 
       </AppContext.Provider>
+      </div>
+    ) : (
+      <>
+      <Login setIsAuth={setIsAuth} />
+      <SignUp setIsAuth={setIsAuth} />
+      </>
+    )}
 
     </div>
   );
