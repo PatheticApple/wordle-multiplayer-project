@@ -5,6 +5,7 @@ import GameOver from './components/Gameover';
 import { createContext, useState, useEffect } from 'react';
 import { boardDefault } from './components/Words';
 import { generateWordSet } from './components/Words';
+import 'bootstrap/dist/css/bootstrap.css';
 export const AppContext = createContext();
 
 
@@ -14,7 +15,8 @@ function App() {
   const [wordSet, setWordSet] = useState(new Set())
   const [correctWord, setCorrectWord] = useState("");
   const [disabledLetters, setDisabledLetters] = useState([])
-  const [gameOver, setGameOver] = useState({gameOver: false, guessedWord: false});
+  const [gameOver, setGameOver] = useState({ gameOver: false, guessedWord: false });
+  const [numberofPlayer, setNumberofPlayer] = useState(2);
   useEffect(() => {
     generateWordSet().then((words) => {
       setWordSet(words.wordSet);
@@ -56,12 +58,12 @@ function App() {
     }
 
     if (currentWord.toLowerCase() === correctWord) {
-      setGameOver({gameOver: true, guessedWord: true})
+      setGameOver({ gameOver: true, guessedWord: true })
       console.log("ITs over")
     }
 
     if (currAttempt.attempt == 5) {
-      setGameOver({gameOver: true, guessedWord: false})
+      setGameOver({ gameOver: true, guessedWord: false })
     }
   }
   return (
@@ -75,20 +77,43 @@ function App() {
         board,
         setBoard,
         currAttempt,
-        setCurrAttempt, 
-        onDelete, 
-        onEnter, 
-        onSelectLetter, 
-        correctWord, 
+        setCurrAttempt,
+        onDelete,
+        onEnter,
+        onSelectLetter,
+        correctWord,
         disabledLetters,
         setDisabledLetters,
         gameOver,
         setGameOver
       }}>
-        <div className='game'>
-          <Board />
-          {gameOver.gameOver ? <GameOver/> : <Keyboard />}
+        <div className='row'>
+          <div className='col-6'>
+            <div className='game'>
+              <Board mainPlayer={true} />
+              <div className='m-2'>
+              {gameOver.gameOver ? <GameOver /> : <Keyboard />}
+              </div>
+            </div>
+          </div>
+          <div className='col-6 d-flex flex-wrap'>
+            <div className='game2'>
+              <Board playerName={"Player 1"} />
+            </div>
+            <div className='game2'>
+              <Board playerName={"Player 2"} />
+            </div>
+            <div className='game2'>
+              <Board playerName={"Player 3"} />
+            </div>
+            <div className='game2'>
+              <Board playerName={"Player 4"} />
+            </div>
+
+          </div>
         </div>
+
+
       </AppContext.Provider>
 
     </div>
