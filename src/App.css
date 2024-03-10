@@ -60,12 +60,6 @@ nav h1 {
   margin: 5px;
 }
 
-.row3 {
-  flex: 33%;
-  display: flex;
-  flex-direction: row;
-  margin: 5px;
-}
 
 .other-player-row {
   height: 100%;
